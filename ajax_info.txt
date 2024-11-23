@@ -1,0 +1,1 @@
+Halo, {name}! Selamat datang di AJAX!

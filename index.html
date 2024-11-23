@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Sapa Menggunakan AJAX</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .form-container {
+            display: inline-block;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 200px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #response {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>Form Sapa Menggunakan AJAX</h1>
+    <div class="form-container">
+        <input type="text" id="name" placeholder="Masukkan nama Anda">
+        <br>
+        <button onclick="sendRequest()">Kirim</button>
+    </div>
+    <div id="response" class=""></div>
+
+    <script>
+        function sendRequest() {
+            const name = document.getElementById('name').value.trim();
+            const responseDiv = document.getElementById('response');
+
+            // Reset kelas CSS respons
+            responseDiv.className = "";
+
+            if (!name) {
+                // Tampilkan pesan error jika nama kosong
+                responseDiv.className = "error";
+                responseDiv.innerHTML = "Nama tidak boleh kosong!";
+                return;
+            }
+
+            // Kirim permintaan AJAX jika input tidak kosong
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', `ajax_info.txt?name=${encodeURIComponent(name)}`, true);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    responseDiv.className = "success";
+                    responseDiv.innerHTML = xhr.responseText.replace("{name}", name);
+                } else {
+                    responseDiv.className = "error";
+                    responseDiv.innerHTML = "Terjadi kesalahan. Coba lagi.";
+                }
+            };
+            xhr.send();
+        }
+    </script>
+</body>
+</html>
